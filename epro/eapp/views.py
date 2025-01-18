@@ -6,11 +6,26 @@ from django.core.mail import send_mail
 from django.conf import settings
 import random
 from datetime import datetime, timedelta
+from .models import *
 
 def index(request):
-    return render(request, 'index.html')
+    if request.method == 'POST' and 'image' in request.FILES:  # Ensure the 'image' key is in request.FILES
+        myimage = request.FILES['image']  # Access the uploaded image from request.FILES
+        # Create an instance of Gallery and save the image  # Save the object to the database
+        # return redirect('index')  # Redirect back to the index page after saving
+        todo123=request.POST.get("todo")
+        todo321=request.POST.get("date")
+        todo311=request.POST.get("course")  
+        print(myimage)
+        obj=Gallery(title1=todo123,title2=todo321,title3=todo311,feedimage=myimage)
+        obj.save()
+        data=Gallery.objects.all()
+        return redirect(index)
+    # Retrieve all gallery images to display
+    gallery_images = Gallery.objects.all()
+    return render(request, "index.html")
 
-def usersignup(request):
+def sellersignup(request):
     if request.POST:
         email = request.POST.get('email')
         username = request.POST.get('username')
@@ -29,13 +44,14 @@ def usersignup(request):
         else:
             # Create the user
             user = User.objects.create_user(username=username, email=email, password=password)
+            user.is_staff = True
             user.save()
             messages.success(request, "Account created successfully!")
-            return redirect('userlogin')  # Redirect to login page
+            return redirect('sellerlogin')  # Redirect to login page
 
     return render(request, "register.html")
 
-def userlogin(request):
+def sellerlogin(request):
     if 'username' in request.session:
         return redirect('index')  
     
@@ -47,11 +63,13 @@ def userlogin(request):
         if user is not None:
             login(request, user)
             request.session['username'] = username
-            return redirect('index')  # Redirect to the home page
+            if user.is_staff:
+                return redirect('index')
+            return redirect('firstpage')  # Redirect to the home page
         else:
             messages.error(request, "Invalid credentials.")
 
-    return render(request, 'userlogin.html')
+    return render(request, 'sellerlogin.html')
 
 # def verifyotp(request):
 #     if request.POST:
@@ -153,7 +171,7 @@ def passwordreset(request):
                 if user is not None:
                     login(request, user)
 
-                return redirect('userlogin')  # Redirect to the login page after password reset
+                return redirect('sellerlogin')  # Redirect to the login page after password reset
             except User.DoesNotExist:
                 messages.error(request, "No user found with that email address.")
                 return redirect('getusername')  # Redirect to username input form
@@ -163,4 +181,61 @@ def passwordreset(request):
 def logoutuser(request):
     logout(request)
     request.session.flush()
-    return redirect(userlogin)
+    return redirect(sellerlogin)
+def firstpage(request):
+    data = Gallery.objects.all()  # Default value for `data`
+    
+    # if request.method == 'POST':
+    #     # Handle POST logic
+    #     todo123 = request.POST.get("todo")
+    #     todo321 = request.POST.get("date")
+    #     todo311 = request.POST.get("course")
+        
+    #     obj = Gallery(title1=todo123, title2=todo321, title3=todo311)
+    #     obj.save()
+    #     return redirect('firstpage')  # Redirect after saving the data
+
+    # Handle GET request
+    gallery_images = Gallery.objects.all()
+    return render(request, "firstpage.html", {"gallery_images": gallery_images, "feeds": data})
+def usersignup(request):
+    if request.POST:
+        email = request.POST.get('email')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        confirmpassword = request.POST.get('confpassword')
+
+        # Validate form fields
+        if not username or not email or not password or not confirmpassword:
+            messages.error(request, 'All fields are required.')
+        elif confirmpassword != password:
+            messages.error(request, "Passwords do not match.")
+        elif User.objects.filter(email=email).exists():
+            messages.error(request, "Email already exists.")
+        elif User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists.")
+        else:
+            # Create the user
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
+            messages.success(request, "Account created successfully!")
+            return redirect('userlogin')  # Redirect to login page
+
+    return render(request, "userregister.html")
+def userlogin(request):
+    if 'username' in request.session:
+        return redirect('firstpage')  
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            request.session['username'] = username
+            return redirect('firstpage')  # Redirect to the home page
+        else:
+            messages.error(request, "Invalid credentials.")
+
+    return render(request, 'userlogin.html')
