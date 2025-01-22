@@ -1,12 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/userlogin.css' %}"/>
-    <style>
-        /* General Reset */
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
@@ -127,26 +119,3 @@ p {
         font-size: 12px;
     }
 }
-
-    </style>
-    <title>Mail App</title>
-</head>
-<body>
-    <div>
-        <h1>user login</h1>
-
-        <form method="post">
-            {% csrf_token %}
-            usernmae
-            <input type="text" name="username" id="">
-            password
-            <input type="password" name="password" id="">
-            <input type="submit" value="submit">
-        </form>
-        <a href="{% url 'forgotpassword' %}">forgotpassword</a>
-        <a href="{% url 'usersignup' %}">signup</a>
-        <p>{{ result }}</p> 
-    </div>
-  
-</body>
-</html>

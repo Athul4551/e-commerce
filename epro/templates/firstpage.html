@@ -6,7 +6,212 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <style>
+  /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Navigation Bar Container */
+.navi {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2874f0; /* Flipkart blue */
+    padding: 10px 20px;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logo Section */
+.navi .log img {
+    height: 50px;
+    cursor: pointer;
+}
+
+/* Left Section (Links & Search) */
+.navi .left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Navigation Links */
+.navi .ele {
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.navi .ele:hover {
+    color: #ffe500; /* Flipkart yellow */
+    text-shadow: 0 0 5px rgba(255, 229, 0, 0.8);
+}
+
+/* Search Bar */
+.navi .search .ss {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    width: 200px;
+    transition: width 0.3s, box-shadow 0.3s;
+}
+
+.navi .search .ss:focus {
+    width: 300px;
+    outline: none;
+    box-shadow: 0 0 8px rgba(40, 116, 240, 0.3);
+    border-color: #ffe500; /* Flipkart yellow */
+}
+
+/* Social Icons Section */
+.navi .ice {
+    display: flex;
+    gap: 10px;
+}
+
+.navi .ice1 {
+    background-color: white;
+    color: #2874f0; /* Flipkart blue */
+    font-size: 18px;
+    font-weight: bold;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+div img {
+    display: block;
+    margin: 10px auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer Styling */
+footer {
+    background-color: #2874f0;
+    color: #fff;
+    padding: 20px 0;
+    font-size: 14px;
+}
+
+.footer-block1 {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.colm1, .colm2, .colm3, .colm4 {
+    flex: 1;
+    min-width: 200px;
+}
+
+ul {
+    list-style: none;
+}
+
+ul li {
+    margin: 8px 0;
+}
+
+ul h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+ul a {
+    text-decoration: none;
+    color: #ffe500;
+    transition: color 0.3s;
+}
+
+ul a:hover {
+    color: #fff;
+}
+
+ul p {
+    line-height: 1.5;
+}
+
+.foot-icon {
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.foot-icon div {
+    width: 40px;
+    height: 40px;
+    background-color: #ffe500;
+    color: #2874f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.foot-icon div:hover {
+    transform: scale(1.2);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .navi {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .left {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .footer-block1 {
+        padding: 0 10px;
+    }
+}
+
+
+    </style>
 </head>
+<div class="navi">
+    <div class="log"><img class="move" src="{% static 'images/download.jpg' %}"></div>
+    <div class="left">
+        <div class="ele">shop now</div>
+        <div class="ele">reviws</div>
+        <div class="ele">About Us</div>
+        <div class="ele">Contact Us</div>
+        <div class="search">
+        <input class="ss" type="search" placeholder="product code" id="first name" name="firstname" maxlength="50"requid>
+        </div>
+        <div class="ice">
+            <div class="ice1">f</div>
+            <div class="ice1">in</div>
+        </div>
+    </div>
+</div>
 <body class="rr">
 <div>
     <div>
@@ -29,6 +234,60 @@
 {% endfor %}
 </div>
 <a href="{% url 'logout' %}">logout</a>
+<footer>
+        <div class="footer-block1">
+            <div class="container">
+                <div class="row">
+                    <div class="colm1">
+                        <ul>
+                            <li class="foot-logo">
+                            </li>
+                            <li class="foot-icon">
+                                <div class="f"><p>f</p></div>
+                                <div class="tw">tw</div>
+                                <div class="in">in</div>
+                                <div class="x">X</div>
+                            </li>
+                            <li>
+                                <p style="color: white; font-size: 12px;">© All rights reserved by Chempakam, Cochin, India.</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="colm2">
+                        <div class="sol-ul">
+                            <ul>
+                                <li><h4 style="color: aliceblue;">Solutions</h4></li>
+                                <li>My account</li>
+                                <li>Track Your Order</li>
+                                <li>Order History</li>
+                                <li>Payment Methods</li>
+                                <li>Privacy Policy</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="colm3">
+                        <ul>
+                            <li><h4>About Us</h4></li>
+                            <li><p>About us</p></li>
+                            <li><p>Terms & Conditions</p></li>
+                            <li><p>Privacy Policy</p></li>
+                            <li><p>Return Policy</p></li>
+                            <li><p>Site Map</p></li>
+                        </ul>
+                    </div>
+                    <div class="colm4">
+                        <ul>
+                            <li><h4>Contact Us</h4></li>
+                            <li><p> Kureekkadu, Ernakulam, Kerala</p></li>
+                            <li><a href=""> +91-86065 70657</a></li>
+                            <li><p>Mon - Sat / 9:00AM - 6:00PM</p></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
     <!-- Display images if there are any -->
