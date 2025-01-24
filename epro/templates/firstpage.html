@@ -215,25 +215,17 @@ ul p {
 <body class="rr">
 <div>
     <div>
-        {% for i in feeds %}
+        {% for i in gallery_images %}
             <div>
-                {% if i.feedimage %}
-                    <img src="{{ i.feedimage.url }}" alt="Gallery Image" width="300">
-                {% else %}
-                    <p>No image available</p>
-                {% endif %}
+                <img src="{{ i.feedimage.url }}" alt="Gallery Image" width="300">
+                <span>{{ i.title1 }}</span>
+                <span>{{ i.title2 }}</span>
+                <span>{{ i.title3 }}</span>
             </div>
         {% endfor %}
     </div>
-    
-{% for i in feeds %}
-
-<span>{{ i.title1 }}</span>
-<span>{{ i.title2 }}</span>
-<span>{{ i.title3 }}</span>
-{% endfor %}
 </div>
-<a href="{% url 'logout' %}">logout</a>
+<a href="{% url 'logout' %}"><button>logout</button></a>
 <footer>
         <div class="footer-block1">
             <div class="container">

@@ -156,6 +156,20 @@ a:hover {
 </head>
 <body>
    <h1>welcome</h1>
+   {% if data1 %}
+    <form action="{% url 'edit_g' data1.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="image" id="image" value="{{data1.myimage}}" required>
+        name
+    <input type="text" name="todo" class="ww" value="{{data1.title1}}"><br><br>
+    price
+    <input type="text" name="date" class="www" value="{{data1.title2}}"><br><br>
+    delivery type
+    <input type="text" name="course" class="ww" value="{{data1.title3}}"><br><br>
+    <!-- <input type="submit" value="submit" class="cc"><br><br> -->
+    <button type="submit" class="cc">submit</button>
+    </form>
+   {% else %}
    <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <label for="image">Upload Image:</label>
@@ -167,6 +181,7 @@ a:hover {
     delivary type
     <input type="text" name="course" class="ww"><br><br>
     <button type="submit">Submit</button>
+    {% endif %}
 </form>
 <div>
     {% for i in gallery_images %}

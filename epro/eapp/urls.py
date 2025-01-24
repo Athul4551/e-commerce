@@ -16,6 +16,11 @@ urlpatterns = [
   path('firstpage',views.firstpage,name="firstpage"),
   path('userlogin',views.userlogin,name="userlogin"),
   path('usersignup',views.usersignup,name="usersignup"),
+  path('deletion/<int:id>',views.delete_g,name='deletion'),
+  path('add',views.add,name='add'),
+  path('sellerfirstpage',views.sellerfirstpage,name='sellerfirstpage'),
+  path('edit_g/<int:id>',views.edit_g,name='edit_g'),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

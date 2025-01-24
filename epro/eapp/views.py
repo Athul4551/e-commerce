@@ -16,8 +16,7 @@ def index(request):
         todo123=request.POST.get("todo")
         todo321=request.POST.get("date")
         todo311=request.POST.get("course")  
-        print(myimage)
-        obj=Gallery(title1=todo123,title2=todo321,title3=todo311,feedimage=myimage)
+        obj=Gallery(title1=todo123,title2=todo321,title3=todo311,feedimage=myimage,user=request.user)
         obj.save()
         data=Gallery.objects.all()
         return redirect(index)
@@ -64,7 +63,7 @@ def sellerlogin(request):
             login(request, user)
             request.session['username'] = username
             if user.is_staff:
-                return redirect('index')
+                return redirect('sellerfirstpage')
             return redirect('firstpage')  # Redirect to the home page
         else:
             messages.error(request, "Invalid credentials.")
@@ -183,7 +182,7 @@ def logoutuser(request):
     request.session.flush()
     return redirect(sellerlogin)
 def firstpage(request):
-    data = Gallery.objects.all()  # Default value for `data`
+    # Default value for `data`
     
     # if request.method == 'POST':
     #     # Handle POST logic
@@ -197,7 +196,7 @@ def firstpage(request):
 
     # Handle GET request
     gallery_images = Gallery.objects.all()
-    return render(request, "firstpage.html", {"gallery_images": gallery_images, "feeds": data})
+    return render(request, "firstpage.html", {"gallery_images": gallery_images})
 def usersignup(request):
     if request.POST:
         email = request.POST.get('email')
@@ -239,3 +238,25 @@ def userlogin(request):
             messages.error(request, "Invalid credentials.")
 
     return render(request, 'userlogin.html')
+def sellerfirstpage(request):
+    data = Gallery.objects.all()
+    gallery_images = Gallery.objects.filter(user=request.user)
+    return render(request,'sellerfirstpage.html',{"gallery_images": gallery_images})
+def delete_g(request,id):
+    feeds=Gallery.objects.filter(pk=id)
+    feeds.delete()
+    return redirect(index)
+def add(request):
+    return render(request,"index.html")
+def edit_g(request,id):
+    if request.method == 'POST' and 'image' in request.FILES:
+        myimage = request.FILES['image']
+        todo123=request.POST.get("todo")
+        todo321=request.POST.get("date")
+        todo311=request.POST.get("course")
+        Gallery.objects.filter(pk=id).update(title1=todo123,title2=todo321,title3=todo311,feedimage=myimage,user=request.user)
+        return redirect('sellerfirstpage')
+    else:
+        gallery_images=Gallery.objects.get(pk=id)
+        return render(request,'index.html',{'data1':gallery_images})
+    
