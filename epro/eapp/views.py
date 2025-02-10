@@ -7,6 +7,9 @@ from django.conf import settings
 import random
 from datetime import datetime, timedelta
 from .models import *
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+
 
 def index(request):
     if request.method == 'POST' and 'image' in request.FILES:  # Ensure the 'image' key is in request.FILES
@@ -19,7 +22,7 @@ def index(request):
         obj=Gallery(title1=todo123,title2=todo321,title3=todo311,feedimage=myimage,user=request.user)
         obj.save()
         data=Gallery.objects.all()
-        return redirect(index)
+        return redirect(sellerfirstpage)
     # Retrieve all gallery images to display
     gallery_images = Gallery.objects.all()
     return render(request, "index.html")
@@ -248,15 +251,50 @@ def delete_g(request,id):
     return redirect(index)
 def add(request):
     return render(request,"index.html")
-def edit_g(request,id):
-    if request.method == 'POST' and 'image' in request.FILES:
-        myimage = request.FILES['image']
-        todo123=request.POST.get("todo")
-        todo321=request.POST.get("date")
-        todo311=request.POST.get("course")
-        Gallery.objects.filter(pk=id).update(title1=todo123,title2=todo321,title3=todo311,feedimage=myimage,user=request.user)
+
+@login_required
+def edit_g(request, id):
+    # Fetch the Gallery object or return a 404 if not found
+    gallery_image = get_object_or_404(Gallery, pk=id, user=request.user)
+    
+    if request.method == 'POST':
+        # Fetch form fields and image
+        todo123 = request.POST.get("todo")
+        todo321 = request.POST.get("date")
+        todo311 = request.POST.get("course")
+        myimage = request.FILES.get('image')  # Use `.get` to avoid KeyError
+        
+        # Validate form fields (example: ensure none are empty)
+        if not todo123 or not todo321 or not todo311:
+            messages.error(request, "All fields are required.")
+            return render(request, 'index.html', {'data1': gallery_image})
+        
+        # Update the object
+        gallery_image.title1 = todo123
+        gallery_image.title2 = todo321
+        gallery_image.title3 = todo311
+        if myimage:  # Only update the image if one is provided
+            gallery_image.feedimage = myimage
+        gallery_image.save()
+
+        messages.success(request, "Gallery item updated successfully!")
         return redirect('sellerfirstpage')
-    else:
-        gallery_images=Gallery.objects.get(pk=id)
-        return render(request,'index.html',{'data1':gallery_images})
+
+    # Handle GET request to display the form
+    return render(request, 'index.html', {'data1': gallery_image})
+def review(request):
+    return render(request,"review.html")
+def aboutus(request):
+    return render(request,"aboutus.html")
+def product(request,id):
+    # data = Gallery.objects.all()
+    gallery_images =Gallery.objects.filter(pk=id)
+    return render(request,'products.html',{"gallery_images": gallery_images})
+def add_to_cart(request, id):
+    data1=id
+    gallery_images =Gallery.objects.filter(pk=id)
+    gallery_images = Gallery.objects.all()
+    return render(request,'add_to_cart.html',{"gallery_images": gallery_images})
+    
+
     

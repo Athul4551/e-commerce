@@ -20,6 +20,10 @@ urlpatterns = [
   path('add',views.add,name='add'),
   path('sellerfirstpage',views.sellerfirstpage,name='sellerfirstpage'),
   path('edit_g/<int:id>',views.edit_g,name='edit_g'),
+  path('review',views.review,name='review'),
+  path('aboutus',views.aboutus,name='aboutus'),
+  path('product/<int:id>',views.product,name='product'),
+  path('add_to_cart/<int:id>',views.add_to_cart,name='add_to_cart'),
 
 ]
 if settings.DEBUG:
