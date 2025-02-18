@@ -1,9 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
     <style>
         :root {
             --flipkart-blue: #2874f0;
@@ -11,21 +13,20 @@
             --light-gray: #f1f3f6;
             --text-gray: #212121;
             --success-green: #388e3c;
-            --border-color: #e0e0e0;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Inter, system-ui, -apple-system, sans-serif;
+            font-family: Inter, system-ui, sans-serif;
         }
-        
+
         body {
             background: var(--light-gray);
         }
-        
-        /* Navigation Styles */
+
+        /* Navigation */
         .navi {
             background: var(--flipkart-blue);
             padding: 12px 24px;
@@ -34,7 +35,7 @@
             z-index: 100;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
-        
+
         .left {
             max-width: 1400px;
             margin: 0 auto;
@@ -43,7 +44,7 @@
             gap: 24px;
             flex-wrap: wrap;
         }
-        
+
         .ele {
             color: white;
             font-weight: 500;
@@ -52,30 +53,31 @@
             transition: all 0.2s ease;
             border-radius: 4px;
         }
-        
+
         .ele:hover {
             background: rgba(255,255,255,0.1);
         }
-        
+
         .search {
             flex: 1;
             max-width: 600px;
             min-width: 200px;
         }
-        
+
         .ss {
             width: 100%;
             padding: 12px 16px;
             border: none;
             border-radius: 4px;
-            outline: none;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        
+
         .ice {
             display: flex;
             gap: 12px;
         }
-        
+
         .ice1 {
             background: white;
             color: var(--flipkart-blue);
@@ -89,79 +91,86 @@
             cursor: pointer;
             transition: transform 0.2s ease;
         }
-        
+
         .ice1:hover {
             transform: scale(1.1);
         }
-        
-        /* Gallery and Product Info */
+
+        /* Gallery with Flexbox */
         .gallery-wrapper {
             max-width: 1400px;
             margin: 24px auto;
-            padding: 24px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0 24px;
         }
-        
+
         .gallery {
-            display: grid;
-            grid-template-columns: minmax(400px, 1fr) 2fr;
-            gap: 32px;
-            align-items: start;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
         }
-        
+
         .hh {
-            position: sticky;
-            top: 100px;
-            padding: 24px;
+            flex: 0 1 calc(25% - 15px);
+            min-width: 280px;
             background: white;
             border-radius: 8px;
-        }
-        
-        .hh img {
-            width: 100%;
-            max-height: 500px;
-            object-fit: contain;
-            margin-bottom: 16px;
-        }
-        
-        .product-info {
-            padding: 24px;
+            overflow: hidden;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        
-        .product-info p:first-of-type {
-            font-size: 24px;
+
+        .hh:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .hh img {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            background: white;
+            padding: 16px;
+        }
+
+        .product-info {
+            padding: 16px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .hh p {
+            margin: 0;
+        }
+
+        .hh p:first-of-type {
+            font-size: 16px;
             font-weight: 500;
             color: var(--text-gray);
-            margin-bottom: 8px;
         }
-        
-        .product-info p:nth-of-type(2) {
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--text-gray);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .product-info p:nth-of-type(3) {
+
+        .hh p:nth-of-type(2) {
             color: var(--success-green);
             font-size: 14px;
         }
-        
-        /* Footer Styles */
+
+        .hh p:last-of-type {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Footer */
         footer {
             background: #172337;
             color: white;
             padding: 48px 24px;
             margin-top: 48px;
         }
-        
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -169,13 +178,13 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 32px;
         }
-        
+
         .foot-icon {
             display: flex;
             gap: 12px;
             margin: 16px 0;
         }
-        
+
         .foot-icon div {
             width: 36px;
             height: 36px;
@@ -184,42 +193,31 @@
             justify-content: center;
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
-            cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         .foot-icon div:hover {
             background: rgba(255,255,255,0.2);
+            transform: scale(1.1);
         }
-        
+
         footer ul {
             list-style: none;
         }
-        
+
         footer ul li {
             margin-bottom: 12px;
             color: #878787;
         }
-        
+
         footer h4 {
             color: white;
             margin-bottom: 20px;
-            font-size: 14px;
         }
-        
-        footer a {
-            color: #878787;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-        
-        footer a:hover {
-            color: white;
-        }
-        
+
         button {
-            background: var(--flipkart-blue);
-            color: white;
+            background: white;
+            color: var(--flipkart-blue);
             border: none;
             padding: 8px 24px;
             border-radius: 4px;
@@ -227,62 +225,104 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        
+
         button:hover {
-            background: #1a5bc0;
+            background: var(--flipkart-yellow);
         }
-        
+        /* Add link styling */
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+}
+
+/* Navigation link styles */
+.navi a {
+    display: inline-block;
+}
+
+.navi a:hover .ele {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Gallery link styles */
+.gallery a {
+    flex: 0 1 calc(25% - 15px);
+    min-width: 280px;
+}
+
+/* Footer link styles */
+footer a {
+    color: #878787;
+    transition: color 0.2s ease;
+}
+
+footer a:hover {
+    color: white;
+}
+
+/* Maintain responsive design for gallery links */
+@media (max-width: 1200px) {
+    .gallery a {
+        flex: 0 1 calc(33.333% - 14px);
+    }
+}
+
+@media (max-width: 900px) {
+    .gallery a {
+        flex: 0 1 calc(50% - 10px);
+    }
+}
+@media (max-width: 600px) {
+    .gallery a {
+        flex: 0 1 100%;
+        min-width: auto;
+    }
+}
+
         /* Responsive Design */
-        @media (max-width: 1024px) {
-            .gallery {
-                grid-template-columns: 1fr;
-            }
-            
+        @media (max-width: 1200px) {
             .hh {
-                position: relative;
-                top: 0;
+                flex: 0 1 calc(33.333% - 14px);
             }
         }
-        
-        @media (max-width: 768px) {
+
+        @media (max-width: 900px) {
+            .hh {
+                flex: 0 1 calc(50% - 10px);
+            }
+        }
+
+        @media (max-width: 600px) {
             .navi {
                 padding: 12px;
             }
-            
-            .left {
-                gap: 12px;
-            }
-            
+
             .gallery-wrapper {
-                padding: 12px;
-                margin: 12px;
+                padding: 0 12px;
             }
-            
+
             .gallery {
                 gap: 16px;
             }
-            
-            .hh, .product-info {
-                padding: 16px;
+
+            .hh {
+                flex: 0 1 100%;
+                min-width: auto;
             }
-            
-            .product-info p:first-of-type {
-                font-size: 20px;
+
+            .hh img {
+                height: 240px;
             }
-            
-            .product-info p:nth-of-type(2) {
-                font-size: 24px;
+
+            .ele {
+                font-size: 14px;
+                padding: 6px 12px;
             }
-            
+
             .container {
                 grid-template-columns: 1fr;
             }
-        }
-        
-        /* Link Styles */
-        a {
-            text-decoration: none;
-            color: inherit;
         }
     </style>
 </head>
@@ -310,20 +350,18 @@
 
     <div class="gallery-wrapper">
         <div class="gallery">
-            {% for i in gallery_images %}
-                <div class="hh">
-                    <img src="{{ i.feedimage.url }}" alt="Gallery Image">
-                </div>
+            {% for item in cart_items %}
+            <div class="hh">
+                <a href="{% url 'product1' item.product.id %}">
+                <img src="{{ item.product.feedimage.url }}" alt="{{ item.product.title1 }}" width="100">
                 <div class="product-info">
-                    <p>{{ i.title1 }}</p>
-                    <p>{{ i.price }}</p>
-                    <p>{{ i.title3 }}</p>
+                    <p>{{ item.product.title1 }}</p> 
+                    <p> ${{ item.product.price }}</p>
+                    <p> {{ item.product.title3 }}</p>
                 </div>
-                {% if id in cart %}
-                <a href="{% url 'cart' i.id %}"><button>Add to cart</button></a>
-                {% else %}
-                <a href="{% url 'cart' i.id %}"><button>GO to cart</button></a>
-                {% endif %}
+                <a href="{% url 'dele' item.id %}"><button class="delete-button">remove</button></a>
+                </a>
+            </div>
             {% endfor %}
         </div>
     </div>

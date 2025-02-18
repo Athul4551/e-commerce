@@ -340,18 +340,23 @@ footer a:hover {
                 <div class="ice1">F</div>
                 <div class="ice1">IN</div>
             </div>
+            {% if 'username' in request.session %}
             <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
+            {% else %}
+            <div><a href="{% url 'userlogin' %}"><button>Login</button></a></div>
+            {% endif %}
         </div>
     </div>
 
     <div class="gallery-wrapper">
         <div class="gallery">
             {% for i in gallery_images %}
-            <a href="{% url 'product' i.id %}"><div class="hh">
+            <a href="{% url 'product' i.id %}">
+                <div class="hh">
                     <img src="{{ i.feedimage.url }}" alt="Gallery Image">
                     <div class="product-info">
                         <p>{{ i.title1 }}</p>
-                        <p>{{ i.title2 }}</p>
+                        <p>{{ i.price }}</p>
                         <p>{{ i.title3 }}</p>
                     </div>
                 </div></a>

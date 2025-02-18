@@ -201,7 +201,11 @@
                 <div class="ice1">F</div>
                 <div class="ice1">IN</div>
             </div>
+            {% if 'username' in request.session %}
             <div><a href="{% url 'logout' %}"><button>Logout</button></a></div>
+            {% else %}
+            <div><a href="{% url 'userlogin' %}"><button>Login</button></a></div>
+            {% endif %}
         </div>
     </div> 
     <h1>coustemer review</h1>

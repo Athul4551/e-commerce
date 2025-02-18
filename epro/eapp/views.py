@@ -18,8 +18,9 @@ def index(request):
         # return redirect('index')  # Redirect back to the index page after saving
         todo123=request.POST.get("todo")
         todo321=request.POST.get("date")
-        todo311=request.POST.get("course")  
-        obj=Gallery(title1=todo123,title2=todo321,title3=todo311,feedimage=myimage,user=request.user)
+        todo311=request.POST.get("course")
+        todo333=request.POST.get("quant")
+        obj=Gallery(title1=todo123,price=todo321,title3=todo311,quantity=todo333,feedimage=myimage,user=request.user)
         obj.save()
         data=Gallery.objects.all()
         return redirect(sellerfirstpage)
@@ -271,7 +272,7 @@ def edit_g(request, id):
         
         # Update the object
         gallery_image.title1 = todo123
-        gallery_image.title2 = todo321
+        gallery_image.price = todo321
         gallery_image.title3 = todo311
         if myimage:  # Only update the image if one is provided
             gallery_image.feedimage = myimage
@@ -290,11 +291,49 @@ def product(request,id):
     # data = Gallery.objects.all()
     gallery_images =Gallery.objects.filter(pk=id)
     return render(request,'products.html',{"gallery_images": gallery_images})
-def add_to_cart(request, id):
-    data1=id
-    gallery_images =Gallery.objects.filter(pk=id)
-    gallery_images = Gallery.objects.all()
-    return render(request,'add_to_cart.html',{"gallery_images": gallery_images})
-    
+@login_required
+def add_to_cart(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    return render(request, 'cart.html', {"cart_items": cart_items})
 
+    # Check if the product is already in the user's cart
+def cart_views(request, id):
+    if 'username' in request.session:
+        product = Gallery.objects.get(id=id)
+        cart_item, created = Cart.objects.get_or_create(
+            user=request.user,
+            product=product,
+            
+        )
+        cart_item.save()
+        return redirect('cart_view')
+    else:
+        return redirect('userlogin')
     
+    # If the product is already in the cart, increment the quantity
+    # if not created:
+    #     cart_item.quantity += 1
+    #     cart_item.save()    
+    # # Redirect to the cart page or any other page
+    # return redirect('cart_view')  # Replace 'cart_view' with the name of your cart view
+# @login_required
+# def cart_view(request):
+#     cart_items = Cart.objects.filter(user=request.user)
+#     total_price = sum(item.product.price * item.quantity for item in cart_items)
+#     return render(request, 'cart.html', {'cart_items': cart_items, 'total_price': total_price})
+# @login_required
+# def remove_from_cart(request, id):
+#     cart_item = get_object_or_404(Cart, id=id, user=request.user)
+#     cart_item.delete()
+#     return redirect('cart_view')
+# def product_view(request):
+#     return render(request,'products.html')
+@login_required
+def delete_cart(request, id):
+    cart_item = get_object_or_404(Cart, pk=id, user=request.user)
+    cart_item.delete()
+    return redirect('cart_view')  # Ensure 'cart_view' is the name of your cart display URL
+def product1(request,id):
+    # data = Gallery.objects.all()
+    gallery_images =Gallery.objects.filter(pk=id)
+    return render(request,'products.html',{"gallery_images": gallery_images})

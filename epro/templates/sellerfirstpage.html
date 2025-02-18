@@ -178,7 +178,7 @@
         <div>
             <img src="{{ i.feedimage.url }}" alt="Gallery Image">
             <span>{{ i.title1 }}</span>
-            <span>{{ i.title2 }}</span>
+            <span>{{ i.price }}</span>
             <span>{{ i.title3 }}</span>
             <a href="{% url 'deletion' i.id %}"><button class="delete-button">Delete</button></a>
             <a href="{% url 'edit_g' i.id %}"><button class="edit-button">Edit</button></a>

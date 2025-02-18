@@ -23,7 +23,15 @@ urlpatterns = [
   path('review',views.review,name='review'),
   path('aboutus',views.aboutus,name='aboutus'),
   path('product/<int:id>',views.product,name='product'),
-  path('add_to_cart/<int:id>',views.add_to_cart,name='add_to_cart'),
+  path('cart/<int:id>/', views.cart_views, name='cart'),
+  path('add_to_cart', views.add_to_cart, name='cart_view'),
+  path('dele/<int:id>',views.delete_cart,name='dele'),
+  path('product1/<int:id>',views.product,name='product1'),
+  # path('product_view/<int:id>', views.product_view, name='product_view'),
+  # path('cart/', views.cart_view, name='cart_view'),
+  # path('remove_from_cart/<int:id>/', views.remove_from_cart, name='remove_from_cart'),
+
+  
 
 ]
 if settings.DEBUG:
